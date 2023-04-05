@@ -5,11 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sousa.agenda.controller.UserController;
-import com.sousa.agenda.mapper.UserMapper;
-import com.sousa.agenda.model.request.UserRequest;
-import com.sousa.agenda.model.response.UserResponse;
-import com.sousa.agenda.service.UserService;
+import com.sousa.agenda.controller.UsuarioController;
+import com.sousa.agenda.mapper.UsuarioMapper;
+import com.sousa.agenda.model.request.UsuarioRequest;
+import com.sousa.agenda.model.response.UsuarioResponse;
+import com.sousa.agenda.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -17,34 +17,34 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/users")
-public class UserControllerImpl implements UserController {
+@RequestMapping(value = "/usuarios")
+public class UsuarioControllerImpl implements UsuarioController {
 
-    private final UserService service;
-    private final UserMapper mapper;
+    private final UsuarioService service;
+    private final UsuarioMapper mapper;
 
     @Override
-    public ResponseEntity<Mono<Void>> save(final UserRequest request) {
+    public ResponseEntity<Mono<Void>> save(final UsuarioRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.save(request).then());
     }
 
     @Override
-    public ResponseEntity<Mono<UserResponse>> findById(String id) {
+    public ResponseEntity<Mono<UsuarioResponse>> findById(String id) {
         return ResponseEntity.ok().body(
                 service.findById(id).map(mapper::toResponse)
         );
     }
 
     @Override
-    public ResponseEntity<Flux<UserResponse>> findAll() {
+    public ResponseEntity<Flux<UsuarioResponse>> findAll() {
         return ResponseEntity.ok().body(
                 service.findAll().map(mapper::toResponse)
         );
     }
 
     @Override
-    public ResponseEntity<Mono<UserResponse>> update(String id, UserRequest request) {
+    public ResponseEntity<Mono<UsuarioResponse>> update(String id, UsuarioRequest request) {
         return ResponseEntity.ok().body(
                 service.update(id, request).map(mapper::toResponse)
         );

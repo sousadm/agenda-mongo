@@ -8,26 +8,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.sousa.agenda.model.request.UserRequest;
-import com.sousa.agenda.model.response.UserResponse;
+import com.sousa.agenda.model.request.UsuarioRequest;
+import com.sousa.agenda.model.response.UsuarioResponse;
 
 import jakarta.validation.Valid;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface UserController {
+public interface UsuarioController {
 
     @PostMapping
-    ResponseEntity<Mono<Void>> save(@Valid @RequestBody UserRequest request);
+    ResponseEntity<Mono<Void>> save(@Valid @RequestBody UsuarioRequest request);
 
     @GetMapping(value = "/{id}")
-    ResponseEntity<Mono<UserResponse>> findById(@PathVariable String id);
+    ResponseEntity<Mono<UsuarioResponse>> findById(@PathVariable String id);
 
     @GetMapping
-    ResponseEntity<Flux<UserResponse>> findAll();
+    ResponseEntity<Flux<UsuarioResponse>> findAll();
 
     @PatchMapping(value = "/{id}")
-    ResponseEntity<Mono<UserResponse>> update(@PathVariable String id, @RequestBody UserRequest request);
+    ResponseEntity<Mono<UsuarioResponse>> update(@PathVariable String id, @RequestBody UsuarioRequest request);
 
     @DeleteMapping(value = "/{id}")
     ResponseEntity<Mono<Void>> delete(@PathVariable String id);

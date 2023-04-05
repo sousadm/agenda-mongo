@@ -1,11 +1,13 @@
 package com.sousa.agenda.repository;
 
+import java.time.Duration;
+
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.sousa.agenda.entity.User;
+import com.sousa.agenda.entity.Usuario;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -13,26 +15,29 @@ import reactor.core.publisher.Mono;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepository {
+public class UsuarioRepository {
 
 	private final ReactiveMongoTemplate mongoTemplate;
 
-	public Mono<User> save(final User user) {
-		return mongoTemplate.save(user);
+	public Mono<Usuario> save(Usuario model) {
+
+		mongoTemplate.save(model.getPessoa()).subscribe(pessoa -> model.setPessoa(pessoa));
+		return mongoTemplate.save(model);
+
 	}
 
-	public Mono<User> findById(String id) {
-		return mongoTemplate.findById(id, User.class);
+	public Mono<Usuario> findById(String id) {
+		return mongoTemplate.findById(id, Usuario.class);
 	}
 
-	public Flux<User> findAll() {
-		return mongoTemplate.findAll(User.class);
+	public Flux<Usuario> findAll() {
+		return mongoTemplate.findAll(Usuario.class);
 	}
 
-	public Mono<User> findAndRemove(String id) {
+	public Mono<Usuario> findAndRemove(String id) {
 		Query query = new Query();
 		Criteria where = Criteria.where("id").is(id);
-		return mongoTemplate.findAndRemove(query.addCriteria(where), User.class);
+		return mongoTemplate.findAndRemove(query.addCriteria(where), Usuario.class);
 	}
 
 }

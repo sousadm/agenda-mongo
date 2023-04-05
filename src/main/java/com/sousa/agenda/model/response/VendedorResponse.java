@@ -3,9 +3,10 @@ package com.sousa.agenda.model.response;
 import lombok.Data;
 
 @Data
-public class UserResponse {
+public class VendedorResponse {
         String id;
-        String name;
+        String idPessoa;
+        String nome;
+        String celular;
         String email;
-        String password;
  }
