@@ -32,14 +32,14 @@ public class UsuarioControllerImpl implements UsuarioController {
     @Override
     public ResponseEntity<Mono<UsuarioResponse>> findById(String id) {
         return ResponseEntity.ok().body(
-                service.findById(id).map(mapper::toResponse)
+                service.findById(id).map(u -> mapper.toResponse(u))
         );
     }
 
     @Override
     public ResponseEntity<Flux<UsuarioResponse>> findAll() {
         return ResponseEntity.ok().body(
-                service.findAll().map(mapper::toResponse)
+                service.findAll().map(u -> mapper.toResponse(u))
         );
     }
 

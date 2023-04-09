@@ -17,10 +17,10 @@ public interface UsuarioMapper {
 	Pessoa toPessoa(final UsuarioRequest request);
 	
     @Mapping(target = "id", ignore = true)
-    Usuario toEntity(final PessoaRequest request);
+    Usuario toEntity(final UsuarioRequest request);
 
     @Mapping(target = "id", ignore = true)
-    Usuario toEntity(final PessoaRequest request, @MappingTarget final Usuario entity);
+    Usuario toEntity(final UsuarioRequest request, @MappingTarget final Usuario entity);
 
     UsuarioResponse toResponse(final Usuario entity);
 	

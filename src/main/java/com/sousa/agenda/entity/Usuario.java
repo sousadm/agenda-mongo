@@ -25,7 +25,7 @@ public class Usuario extends DadosPessoa {
 	@Indexed(unique = true)
 	private Pessoa pessoa;
 	
-	private String name;
+	private String username;
 	private String password;
 
 }

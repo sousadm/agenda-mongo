@@ -1,7 +1,5 @@
 package com.sousa.agenda.repository;
 
-import java.time.Duration;
-
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,14 +18,19 @@ public class UsuarioRepository {
 	private final ReactiveMongoTemplate mongoTemplate;
 
 	public Mono<Usuario> save(Usuario model) {
-
-		mongoTemplate.save(model.getPessoa()).subscribe(pessoa -> model.setPessoa(pessoa));
+		mongoTemplate.save(model.getPessoa()).subscribe(pessoa -> {
+			model.setPessoa(pessoa);
+		});
 		return mongoTemplate.save(model);
-
 	}
 
 	public Mono<Usuario> findById(String id) {
-		return mongoTemplate.findById(id, Usuario.class);
+		var usuario = mongoTemplate.findById(id, Usuario.class);
+		usuario.subscribe(u -> {
+			System.out.println(u.getPessoa().getId());
+		});
+
+		return usuario;
 	}
 
 	public Flux<Usuario> findAll() {

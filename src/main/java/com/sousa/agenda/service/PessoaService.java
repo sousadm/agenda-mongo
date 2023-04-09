@@ -5,10 +5,10 @@ import static java.lang.String.format;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sousa.agenda.entity.Usuario;
-import com.sousa.agenda.mapper.UsuarioMapper;
-import com.sousa.agenda.model.request.UsuarioRequest;
-import com.sousa.agenda.repository.UsuarioRepository;
+import com.sousa.agenda.entity.Pessoa;
+import com.sousa.agenda.mapper.PessoaMapper;
+import com.sousa.agenda.model.request.PessoaRequest;
+import com.sousa.agenda.repository.PessoaRepository;
 import com.sousa.agenda.service.exception.ObjectNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -17,36 +17,34 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioService {
+public class PessoaService {
 
-	private final UsuarioRepository repository;
-	private final UsuarioMapper mapper;
+	private final PessoaRepository repository;
+	private final PessoaMapper mapper;
 
 	@Transactional
-	public Mono<Usuario> save(final UsuarioRequest request) {
-		var usuario = mapper.toEntity(request);
-		usuario.setPessoa(mapper.toPessoa(request));
-		return repository.save(usuario);
+	public Mono<Pessoa> save(final PessoaRequest request) {
+		return repository.save(mapper.toEntity(request));
 	}
 
-	public Mono<Usuario> findById(final String id) {
+	public Mono<Pessoa> findById(final String id) {
 		return handleNotFound(repository.findById(id), id);
 	}
 
-	public Flux<Usuario> findAll() {
+	public Flux<Pessoa> findAll() {
 		return repository.findAll();
 	}
 
-	public Mono<Usuario> update(final String id, final UsuarioRequest request) {
+	public Mono<Pessoa> update(final String id, final PessoaRequest request) {
 		return findById(id).map(entity -> mapper.toEntity(request, entity)).flatMap(repository::save);
 	}
 
-	public Mono<Usuario> delete(final String id) {
+	public Mono<Pessoa> delete(final String id) {
 		return handleNotFound(repository.findAndRemove(id), id);
 	}
 
 	private <T> Mono<T> handleNotFound(Mono<T> mono, String id) {
 		return mono.switchIfEmpty(Mono.error(new ObjectNotFoundException(
-				format("Object not found. Id: %s, Type: %s", id, Usuario.class.getSimpleName()))));
+				format("Object not found. Id: %s, Type: %s", id, Pessoa.class.getSimpleName()))));
 	}
 }
