@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sousa.agenda.entity.Usuario;
 import com.sousa.agenda.mapper.UsuarioMapper;
 import com.sousa.agenda.model.request.UsuarioRequest;
+import com.sousa.agenda.model.response.UsuarioResponse;
 import com.sousa.agenda.repository.UsuarioRepository;
 import com.sousa.agenda.service.exception.ObjectNotFoundException;
 
@@ -23,10 +24,10 @@ public class UsuarioService {
 	private final UsuarioMapper mapper;
 
 	@Transactional
-	public Mono<Usuario> save(final UsuarioRequest request) {
+	public Mono<UsuarioResponse> save(final UsuarioRequest request) {
 		var usuario = mapper.toEntity(request);
 		usuario.setPessoa(mapper.toPessoa(request));
-		return repository.save(usuario);
+		return repository.save(usuario).map(u -> mapper.toResponse(u));
 	}
 
 	public Mono<Usuario> findById(final String id) {

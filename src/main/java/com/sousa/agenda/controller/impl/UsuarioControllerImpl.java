@@ -25,8 +25,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 
 	@Override
 	public ResponseEntity<Mono<UsuarioResponse>> save(final UsuarioRequest request) {
-		var response = service.save(request).map(u -> mapper.toResponse(u));
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(request));
 	}
 
 	@Override
