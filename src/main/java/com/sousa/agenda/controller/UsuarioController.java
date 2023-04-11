@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public interface UsuarioController {
 
     @PostMapping
-    ResponseEntity<Mono<Void>> save(@Valid @RequestBody UsuarioRequest request);
+    ResponseEntity<Mono<UsuarioResponse>> save(@Valid @RequestBody UsuarioRequest request);
 
     @GetMapping(value = "/{id}")
     ResponseEntity<Mono<UsuarioResponse>> findById(@PathVariable String id);

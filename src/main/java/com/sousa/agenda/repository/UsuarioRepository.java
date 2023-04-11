@@ -15,13 +15,15 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UsuarioRepository {
 
+	private Mono<Usuario> novo = null;
 	private final ReactiveMongoTemplate mongoTemplate;
 
-	public Mono<Usuario> save(Usuario model) {
+	public Mono<Usuario> save(Usuario model) {		
 		mongoTemplate.save(model.getPessoa()).subscribe(pessoa -> {
 			model.setPessoa(pessoa);
+			novo = mongoTemplate.save(model);
 		});
-		return mongoTemplate.save(model);
+		return novo;
 	}
 
 	public Mono<Usuario> findById(String id) {

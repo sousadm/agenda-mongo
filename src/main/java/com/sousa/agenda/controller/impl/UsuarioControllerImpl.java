@@ -20,40 +20,32 @@ import reactor.core.publisher.Mono;
 @RequestMapping(value = "/usuarios")
 public class UsuarioControllerImpl implements UsuarioController {
 
-    private final UsuarioService service;
-    private final UsuarioMapper mapper;
+	private final UsuarioService service;
+	private final UsuarioMapper mapper;
 
-    @Override
-    public ResponseEntity<Mono<Void>> save(final UsuarioRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.save(request).then());
-    }
+	@Override
+	public ResponseEntity<Mono<UsuarioResponse>> save(final UsuarioRequest request) {
+		var response = service.save(request).map(u -> mapper.toResponse(u));
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
 
-    @Override
-    public ResponseEntity<Mono<UsuarioResponse>> findById(String id) {
-        return ResponseEntity.ok().body(
-                service.findById(id).map(u -> mapper.toResponse(u))
-        );
-    }
+	@Override
+	public ResponseEntity<Mono<UsuarioResponse>> findById(String id) {
+		return ResponseEntity.ok().body(service.findById(id).map(u -> mapper.toResponse(u)));
+	}
 
-    @Override
-    public ResponseEntity<Flux<UsuarioResponse>> findAll() {
-        return ResponseEntity.ok().body(
-                service.findAll().map(u -> mapper.toResponse(u))
-        );
-    }
+	@Override
+	public ResponseEntity<Flux<UsuarioResponse>> findAll() {
+		return ResponseEntity.ok().body(service.findAll().map(u -> mapper.toResponse(u)));
+	}
 
-    @Override
-    public ResponseEntity<Mono<UsuarioResponse>> update(String id, UsuarioRequest request) {
-        return ResponseEntity.ok().body(
-                service.update(id, request).map(mapper::toResponse)
-        );
-    }
+	@Override
+	public ResponseEntity<Mono<UsuarioResponse>> update(String id, UsuarioRequest request) {
+		return ResponseEntity.ok().body(service.update(id, request).map(mapper::toResponse));
+	}
 
-    @Override
-    public ResponseEntity<Mono<Void>> delete(String id) {
-        return ResponseEntity.ok().body(
-                service.delete(id).then()
-        );
-    }
+	@Override
+	public ResponseEntity<Mono<Void>> delete(String id) {
+		return ResponseEntity.ok().body(service.delete(id).then());
+	}
 }
